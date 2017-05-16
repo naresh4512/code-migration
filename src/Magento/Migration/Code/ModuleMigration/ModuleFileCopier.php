@@ -265,6 +265,19 @@ class ModuleFileCopier
                                 $this->file->copy($file, $fileToCopy);
                             }
                         }
+                        
+                        if($contentFolder == 'etc'){
+                            $fileToCopy = $this->outputFolder . '/app/code/' . $this->moduleNamespace . '/' .
+                                    $this->moduleName . '/registration.php';
+                            $this->file->touch($fileToCopy);
+                            $data = "<?php 
+                                        \Magento\Framework\Component\ComponentRegistrar::register(
+                                            \Magento\Framework\Component\ComponentRegistrar::MODULE,
+                                            '".$this->moduleNamespace."_".$this->moduleName."',
+                                            __DIR__
+                                        );";
+                            $this->file->filePutContents($fileToCopy,$data);
+                        }
                 }
             }
         }
